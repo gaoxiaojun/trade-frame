@@ -47,8 +47,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-m64 `/usr/local/bin/wx-config --cxxflags`  
+CXXFLAGS=-m64 `/usr/local/bin/wx-config --cxxflags`  
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -69,35 +69,35 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtfinteractivebrokers.a: ${OBJECTFI
 	${AR} -rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtfinteractivebrokers.a ${OBJECTFILES} 
 	$(RANLIB) ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtfinteractivebrokers.a
 
-${OBJECTDIR}/EventIBInstrument.o: EventIBInstrument.cpp 
+${OBJECTDIR}/EventIBInstrument.o: EventIBInstrument.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EventIBInstrument.o EventIBInstrument.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EventIBInstrument.o EventIBInstrument.cpp
 
-${OBJECTDIR}/IBSymbol.o: IBSymbol.cpp 
+${OBJECTDIR}/IBSymbol.o: IBSymbol.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IBSymbol.o IBSymbol.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IBSymbol.o IBSymbol.cpp
 
-${OBJECTDIR}/IBTWS.o: IBTWS.cpp 
+${OBJECTDIR}/IBTWS.o: IBTWS.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IBTWS.o IBTWS.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IBTWS.o IBTWS.cpp
 
-${OBJECTDIR}/linux/EClientSocketBase.o: linux/EClientSocketBase.cpp 
+${OBJECTDIR}/linux/EClientSocketBase.o: linux/EClientSocketBase.cpp
 	${MKDIR} -p ${OBJECTDIR}/linux
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/linux/EClientSocketBase.o linux/EClientSocketBase.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/linux/EClientSocketBase.o linux/EClientSocketBase.cpp
 
-${OBJECTDIR}/linux/EPosixClientSocket.o: linux/EPosixClientSocket.cpp 
+${OBJECTDIR}/linux/EPosixClientSocket.o: linux/EPosixClientSocket.cpp
 	${MKDIR} -p ${OBJECTDIR}/linux
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/linux/EPosixClientSocket.o linux/EPosixClientSocket.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/linux/EPosixClientSocket.o linux/EPosixClientSocket.cpp
 
-${OBJECTDIR}/linux/StdAfx.o: linux/StdAfx.cpp 
+${OBJECTDIR}/linux/StdAfx.o: linux/StdAfx.cpp
 	${MKDIR} -p ${OBJECTDIR}/linux
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/linux/StdAfx.o linux/StdAfx.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/linux/StdAfx.o linux/StdAfx.cpp
 
 # Subprojects
 .build-subprojects:
@@ -105,7 +105,6 @@ ${OBJECTDIR}/linux/StdAfx.o: linux/StdAfx.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtfinteractivebrokers.a
 
 # Subprojects
 .clean-subprojects:

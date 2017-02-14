@@ -16,6 +16,9 @@
 
 #include <boost/smart_ptr.hpp>
 
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+
 #include <OUCommon/Delegate.h>
 
 #include <TFTimeSeries/TimeSeries.h>
@@ -26,6 +29,8 @@
 #include <TFIQFeed/IQFeedSymbol.h>
 
 // 20151228 convert the delegate to a signal?  a little slower maybe.
+
+// 20160122 will want to set signals on provider so watch/unwatch as provider transitions connection states
 
 namespace ou { // One Unified
 namespace tf { // TradeFrame
@@ -65,6 +70,8 @@ public:
   bool operator<=( const Watch& rhs ) const { return m_pInstrument->GetInstrumentName() <= rhs.m_pInstrument->GetInstrumentName(); };
 
   pInstrument_t GetInstrument( void ) { return m_pInstrument; };
+  
+  void SetProvider( pProvider_t pDataProvider );
   pProvider_t GetProvider( void ) { return m_pDataProvider; };
 
   bool Watching( void ) const { return 0 != m_cntWatching; };
@@ -80,6 +87,10 @@ public:
 
   ou::Delegate<const Quote&> OnQuote;
   ou::Delegate<const Trade&> OnTrade;
+  
+  //typedef std::pair<size_t,size_t> stateTimeSeries_t;
+  //ou::Delegate<const stateTimeSeries_t&> OnPossibleResizeBegin;
+  //ou::Delegate<const stateTimeSeries_t&> OnPossibleResizeEnd;
 
   virtual void StartWatch( void );
   virtual bool StopWatch( void );
@@ -90,7 +101,7 @@ public:
 
 protected:
 
-  // use an iterator instead?  or keep as is as it facilitates multithread append and access operations
+  // use an iterator instead?  or keep as is as it facilitates multi-thread append and access operations
   // or will the stuff in TBB help with this type of access?
 
   ou::tf::Quote m_quote;
@@ -106,20 +117,48 @@ protected:
   std::stringstream m_ss;
 
   unsigned int m_cntWatching;
-
+  
 private:
+
+  bool m_bWatchingEnabled;
+  bool m_bWatching; // in/out of connected state
+  
 
   Fundamentals_t m_fundamentals;
   Summary_t m_summary;
-
+  
   void Initialize( void );
+  
+  void AddEvents( void );
+  void RemoveEvents( void );
+  
+  void HandleConnecting( int );
+  void HandleConnected( int );
+  void HandleDisconnecting( int );
+  void HandleDisconnected( int );
+  
+  void EnableWatch();
+  void DisableWatch();
 
   void HandleQuote( const Quote& quote );
   void HandleTrade( const Trade& trade );
 
   void HandleIQFeedFundamentalMessage( ou::tf::IQFeedSymbol& symbol );
   void HandleIQFeedSummaryMessage( ou::tf::IQFeedSymbol& symbol );
+  
+  void HandleTimeSeriesAllocation( Trades::size_type count );
 
+  template<typename Archive>
+  void save( Archive& ar, const unsigned int version ) const {
+    //ar & boost::serialization::base_object<const InstrumentInfo>(*this);
+  }
+
+  template<typename Archive>
+  void load( Archive& ar, const unsigned int version ) {
+    //ar & boost::serialization::base_object<InstrumentInfo>(*this);
+  }
+
+  BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
 
 } // namespace tf

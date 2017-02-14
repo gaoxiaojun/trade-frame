@@ -47,23 +47,23 @@ void TreeItemInstrument::HandleDailyChart( wxCommandEvent& event ) {
 }
 
 void TreeItemInstrument::HandleSaveData( wxCommandEvent& event ) {
-  
+  //m_pInstrumentWatch->SaveSeries()
 }
 
 void TreeItemInstrument::BuildContextMenu( wxMenu* pMenu ) {
   assert( 0 != pMenu );
-  if ( 0 == m_pInstrumentInfo.use_count() ) {  // is this actually used?
+  if ( 0 == m_pInstrumentWatch.use_count() ) {  // is this actually used?
     pMenu->Append( MINewInstrument, "New Instrument" );
     pMenu->Bind( wxEVT_COMMAND_MENU_SELECTED, &TreeItemInstrument::HandleMenuNewInstrument, this, MINewInstrument );
   }
   else {
-    if ( m_pInstrumentInfo->GetInstrument()->IsFuture() ) {
+    if ( m_pInstrumentWatch->GetInstrument()->IsFuture() ) {
       // can then use underlying to calc implied volatility
       pMenu->Append( MINewFuturesOption, "New Futures Option" );
       pMenu->Bind( wxEVT_COMMAND_MENU_SELECTED, &TreeItemInstrument::HandleMenuAddFuturesOption, this, MINewFuturesOption );
     }
     else {
-      if ( m_pInstrumentInfo->GetInstrument()->IsStock() ) {
+      if ( m_pInstrumentWatch->GetInstrument()->IsStock() ) {
       // can then use underlying to calc implied volatility
         pMenu->Append( MINewOption, "New Option" );
         pMenu->Bind( wxEVT_COMMAND_MENU_SELECTED, &TreeItemInstrument::HandleMenuAddOption, this, MINewOption );
@@ -84,7 +84,7 @@ void TreeItemInstrument::BuildContextMenu( wxMenu* pMenu ) {
 }
 
 void TreeItemInstrument::HandleEmit( wxCommandEvent& event ) {
-  m_pInstrumentInfo->Emit();
+  m_pInstrumentWatch->EmitValues();
 }
 
 void TreeItemInstrument::ShowContextMenu( void ) {
@@ -98,7 +98,7 @@ void TreeItemInstrument::ShowContextMenu( void ) {
 void TreeItemInstrument::InstrumentViaDialog( Resources::ENewInstrumentLock lock, const std::string& sPrompt ) {
   TreeItemInstrument* p = AddTreeItem<TreeItemInstrument>( sPrompt, IdInstrument, m_resources );
   p->NewInstrumentViaDialog( lock );
-  if ( 0 == p->GetInstrumentInfo().get() ) {
+  if ( 0 == p->m_pInstrumentWatch.get() ) {
     this->m_baseResources.signalDelete( p->GetTreeItemId() );
     //DeleteMember( p->GetTreeItemId() );
   }
@@ -107,15 +107,15 @@ void TreeItemInstrument::InstrumentViaDialog( Resources::ENewInstrumentLock lock
 }
 
 void TreeItemInstrument::NewInstrumentViaDialog( Resources::ENewInstrumentLock lock ) {
-  if ( 0 == m_pInstrumentInfo.use_count() ) {
-    m_pInstrumentInfo = m_resources.signalNewInstrumentViaDialog( lock ); // call dialog
-    if ( 0 != m_pInstrumentInfo.get() ) {
-      m_baseResources.signalSetItemText( m_id, m_pInstrumentInfo->GetInstrument()->GetInstrumentName() );
-      m_pInstrumentInfo->Watch();
+  if ( 0 == m_pInstrumentWatch.use_count() ) {
+    m_pInstrumentWatch = m_resources.signalNewInstrumentViaDialog( lock ); // call dialog
+    if ( 0 != m_pInstrumentWatch.get() ) {
+      m_baseResources.signalSetItemText( m_id, m_pInstrumentWatch->GetInstrument()->GetInstrumentName() );
+      m_pInstrumentWatch->StartWatch();
     }
   }
   else {
-    std::cout << "InstrumentInfo already assigned" << std::endl;
+    std::cout << "InstrumentWatch already assigned" << std::endl;
   }
 }
 
@@ -124,7 +124,9 @@ void TreeItemInstrument::HandleMenuNewInstrument( wxCommandEvent& event ) {
 }
 
 /* todo:  
- *   for following two handlers (what does the lock do?):
+ *   for following two handlers:
+ *   the lock should be forcing the gui to show options only for the underlying instrument
+ *     when adding sub-menus to the tree
  *   the dialog needs a lock for FuturesOption and Option
  *   then need NewOptionViaDialog, NewFuturesOptionViaDialog to force that setting in the dialog
  */

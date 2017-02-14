@@ -98,8 +98,8 @@ private:
   typedef std::map<std::string,structPortfolio> mapPortfolios_t;
 
   // maybe serialize these settings?
-  bool m_bData1Connected;
-  bool m_bExecConnected;
+  //bool m_bData1Connected;  // available in FrameWork01
+  //bool m_bExecConnected;  // available in FrameWork01
   bool m_bStarted;
 
   std::string m_sDbName;
@@ -168,6 +168,7 @@ private:
   void OnClose( wxCloseEvent& event );
 
   void Start( void );
+  void Stop( void );
   void TestSymbols( void );
   
   void BuildFrameCharts( void );
@@ -181,11 +182,14 @@ private:
   void HandleIBContractDetails( const ou::tf::IBTWS::ContractDetails&, pInstrument_t& pInstrument );
   void HandleIBContractDetailsDone( void );
 
+  void OnData1Connecting( int );
   void OnData1Connected( int );
-//  void OnData2Connected( int ) {};
-  void OnExecConnected( int );
+  void OnData1Disconnecting( int );
   void OnData1Disconnected( int );
-//  void OnData2Disconnteted( int ) {};
+
+  void OnExecConnecting( int );
+  void OnExecConnected( int );
+  void OnExecDisconnecting( int );
   void OnExecDisconnected( int );
 
   void HandleSaveButton( void );

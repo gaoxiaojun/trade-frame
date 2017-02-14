@@ -65,7 +65,7 @@ void PanelCharts::Init( void ) {
   m_pDialogPickSymbol = 0;
   m_pTreeOps = 0;
   //m_winChart = 0;
-  m_pChartInteractive = 0;
+  m_pwinDetail = 0;
   m_pDialogPickSymbol = 0;
 }
 
@@ -155,37 +155,64 @@ void PanelCharts::CreateControls() {
   //m_pHdf5Root->DeleteChildren( m_pHdf5Root->GetRootItem() );
 
   namespace args = boost::phoenix::arg_names;
-  m_resources.signalNewInstrumentViaDialog.connect( boost::phoenix::bind( &PanelCharts::HandleNewInstrumentRequest, this /* ,args::arg1 */ ) );
+  m_resources.signalNewInstrumentViaDialog.connect( boost::phoenix::bind( &PanelCharts::HandleNewInstrumentRequest, this, args::arg1 ) );
   m_resources.signalLoadInstrument.connect( boost::phoenix::bind( &PanelCharts::HandleLoadInstrument, this, args::arg1 ) );
   
   m_de.signalLookupDescription.connect( boost::phoenix::bind( &PanelCharts::HandleLookUpDescription, this, args::arg1, args::arg2 ) );
   m_de.signalComposeComposite.connect( boost::phoenix::bind( &PanelCharts::HandleComposeComposite, this, args::arg1 ) );
+  
+  m_pTreeOps->signalChanging.connect( boost::phoenix::bind( &PanelCharts::HandleTreeOpsChanging, this, args::arg1 ) );
   
   Bind( wxEVT_CLOSE_WINDOW, &PanelCharts::OnClose, this );  // start close of windows and controls
   
   //Bind( wxEVT_TIMER, &PanelCharts::HandleGuiRefresh, this, m_timerGuiRefresh.GetId() );
   //m_timerGuiRefresh.SetOwner( this );
   
-  m_pChartInteractive = new ChartInteractive( panelSplitterRightPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER );
-  sizerRight->Add( m_pChartInteractive, 1, wxALL|wxEXPAND, 5);
+  //m_pwinDetail = new ChartInteractive( panelSplitterRightPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER );
+  //sizerRight->Add( m_pwinDetail, 1, wxALL|wxEXPAND, 5);
 
 }
 
 void PanelCharts::SetProviders( pProvider_t pData1Provider, pProvider_t pData2Provider, pProvider_t pExecutionProvider ) {
+  bool b( m_pData1Provider.get() != pData1Provider.get() );
   m_pData1Provider = pData1Provider;
   m_pData2Provider = pData2Provider;
   m_pExecutionProvider = pExecutionProvider;
+  if ( b ) {
+    for ( mapInstrumentWatch_t::iterator iter = m_mapInstrumentWatch.begin(); m_mapInstrumentWatch.end() != iter; ++iter ) {
+      iter->second->SetProvider( m_pData1Provider );
+    }
+  }
 }
 
-PanelCharts::pInstrumentInfo_t PanelCharts::HandleNewInstrumentRequest( void ) {
+void PanelCharts::HandleTreeOpsChanging( wxTreeItemId id ) {
+  if ( 0 != m_pwinDetail ) {
+    delete m_pwinDetail;
+    m_pwinDetail = 0;
+  }
+}
+
+PanelCharts::pWatch_t PanelCharts::HandleNewInstrumentRequest( const Resources::ENewInstrumentLock lock ) {
+  
   assert( 0 == m_pDialogPickSymbol );
   
   m_pDialogPickSymbol = new ou::tf::DialogPickSymbol( this );
   m_pDialogPickSymbol->SetDataExchange( &m_de );
   
+  switch ( lock ) {
+    case Resources::ENewInstrumentLock::LockFuturesOption:
+      m_pDialogPickSymbol->SetFuturesOptionOnly();
+      break;
+    case Resources::ENewInstrumentLock::LockOption:
+      m_pDialogPickSymbol->SetOptionOnly();
+      break;
+    case Resources::ENewInstrumentLock::NoLock:
+      break;
+  }
+  
   int status = m_pDialogPickSymbol->ShowModal();
   
-  InstrumentInfo::pInstrumentInfo_t pInstrumentInfo;
+  pWatch_t pInstrumentWatch;
   
   switch ( status ) {
     case wxID_CANCEL:
@@ -193,7 +220,7 @@ PanelCharts::pInstrumentInfo_t PanelCharts::HandleNewInstrumentRequest( void ) {
       break;
     case wxID_OK:
       if ( 0 != m_pDialogPickSymbolCreatedInstrument.get() ) {
-        pInstrumentInfo = LoadInstrument( m_pDialogPickSymbolCreatedInstrument );
+        pInstrumentWatch = LoadInstrument( m_pDialogPickSymbolCreatedInstrument );
       }
       break;
   }
@@ -203,26 +230,28 @@ PanelCharts::pInstrumentInfo_t PanelCharts::HandleNewInstrumentRequest( void ) {
   
   m_pDialogPickSymbolCreatedInstrument.reset();
   
-  return pInstrumentInfo;
+  return pInstrumentWatch;
 }
 
-PanelCharts::pInstrumentInfo_t PanelCharts::HandleLoadInstrument( const std::string& name ) {
+PanelCharts::pWatch_t PanelCharts::HandleLoadInstrument( const std::string& name ) {
   return LoadInstrument( signalLoadInstrument( name ) );
 }
 
-PanelCharts::pInstrumentInfo_t PanelCharts::LoadInstrument( pInstrument_t pInstrument ) {
-  pInstrumentInfo_t pInstrumentInfo;
+PanelCharts::pWatch_t PanelCharts::LoadInstrument( pInstrument_t pInstrument ) {
+  
+  pWatch_t pInstrumentWatch;
+  
   const ou::tf::Instrument::idInstrument_t sInstrumentId( pInstrument->GetInstrumentName() );
-  mapInstrumentInfo_t::iterator iter = m_mapInstrumentInfo.find( sInstrumentId );
-  if ( m_mapInstrumentInfo.end() == iter ) {
-    pInstrumentInfo.reset( new InstrumentInfo( pInstrument, m_pData1Provider ) );
-    m_mapInstrumentInfo.insert( mapInstrumentInfo_t::value_type( sInstrumentId, pInstrumentInfo ) );
+  mapInstrumentWatch_t::iterator iter = m_mapInstrumentWatch.find( sInstrumentId );
+  if ( m_mapInstrumentWatch.end() == iter ) {
+    pInstrumentWatch.reset( new ou::tf::Watch( pInstrument, m_pData1Provider ) );
+    m_mapInstrumentWatch.insert( mapInstrumentWatch_t::value_type( sInstrumentId, pInstrumentWatch ) );
     signalRegisterInstrument( pInstrument );
   }
   else {
-    pInstrumentInfo = iter->second;
+    pInstrumentWatch = iter->second;
   }
-  return pInstrumentInfo;
+  return pInstrumentWatch;
 }
 
 // extract this sometime because the string builder might be used elsewhere

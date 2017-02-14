@@ -49,8 +49,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-m64
+CXXFLAGS=-m64
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -71,45 +71,45 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtfoptions.a: ${OBJECTFILES}
 	${AR} -rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtfoptions.a ${OBJECTFILES} 
 	$(RANLIB) ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtfoptions.a
 
-${OBJECTDIR}/Binomial.o: Binomial.cpp 
+${OBJECTDIR}/Binomial.o: Binomial.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Binomial.o Binomial.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Binomial.o Binomial.cpp
 
-${OBJECTDIR}/Bundle.o: Bundle.cpp 
+${OBJECTDIR}/Bundle.o: Bundle.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Bundle.o Bundle.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Bundle.o Bundle.cpp
 
-${OBJECTDIR}/CalcExpiry.o: CalcExpiry.cpp 
+${OBJECTDIR}/CalcExpiry.o: CalcExpiry.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CalcExpiry.o CalcExpiry.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CalcExpiry.o CalcExpiry.cpp
 
-${OBJECTDIR}/Formula.o: Formula.cpp 
+${OBJECTDIR}/Formula.o: Formula.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Formula.o Formula.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Formula.o Formula.cpp
 
-${OBJECTDIR}/Margin.o: Margin.cpp 
+${OBJECTDIR}/Margin.o: Margin.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Margin.o Margin.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Margin.o Margin.cpp
 
-${OBJECTDIR}/Option.o: Option.cpp 
+${OBJECTDIR}/Option.o: Option.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Option.o Option.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Option.o Option.cpp
 
-${OBJECTDIR}/PopulateWithIBOptions.o: PopulateWithIBOptions.cpp 
+${OBJECTDIR}/PopulateWithIBOptions.o: PopulateWithIBOptions.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/PopulateWithIBOptions.o PopulateWithIBOptions.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/PopulateWithIBOptions.o PopulateWithIBOptions.cpp
 
-${OBJECTDIR}/Strike.o: Strike.cpp 
+${OBJECTDIR}/Strike.o: Strike.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Strike.o Strike.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Strike.o Strike.cpp
 
 # Subprojects
 .build-subprojects:
@@ -117,7 +117,6 @@ ${OBJECTDIR}/Strike.o: Strike.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtfoptions.a
 
 # Subprojects
 .clean-subprojects:

@@ -57,8 +57,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-m64
+CXXFLAGS=-m64
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -79,85 +79,85 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtfiqfeed.a: ${OBJECTFILES}
 	${AR} -rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtfiqfeed.a ${OBJECTFILES} 
 	$(RANLIB) ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtfiqfeed.a
 
-${OBJECTDIR}/BuildInstrument.o: BuildInstrument.cpp 
+${OBJECTDIR}/BuildInstrument.o: BuildInstrument.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BuildInstrument.o BuildInstrument.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BuildInstrument.o BuildInstrument.cpp
 
-${OBJECTDIR}/BuildSymbolName.o: BuildSymbolName.cpp 
+${OBJECTDIR}/BuildSymbolName.o: BuildSymbolName.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BuildSymbolName.o BuildSymbolName.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BuildSymbolName.o BuildSymbolName.cpp
 
-${OBJECTDIR}/CurlGetMktSymbols.o: CurlGetMktSymbols.cpp 
+${OBJECTDIR}/CurlGetMktSymbols.o: CurlGetMktSymbols.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CurlGetMktSymbols.o CurlGetMktSymbols.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CurlGetMktSymbols.o CurlGetMktSymbols.cpp
 
-${OBJECTDIR}/IQFeed.o: IQFeed.cpp 
+${OBJECTDIR}/IQFeed.o: IQFeed.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IQFeed.o IQFeed.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IQFeed.o IQFeed.cpp
 
-${OBJECTDIR}/IQFeedMessages.o: IQFeedMessages.cpp 
+${OBJECTDIR}/IQFeedMessages.o: IQFeedMessages.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IQFeedMessages.o IQFeedMessages.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IQFeedMessages.o IQFeedMessages.cpp
 
-${OBJECTDIR}/IQFeedProvider.o: IQFeedProvider.cpp 
+${OBJECTDIR}/IQFeedProvider.o: IQFeedProvider.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IQFeedProvider.o IQFeedProvider.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IQFeedProvider.o IQFeedProvider.cpp
 
-${OBJECTDIR}/IQFeedSymbol.o: IQFeedSymbol.cpp 
+${OBJECTDIR}/IQFeedSymbol.o: IQFeedSymbol.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IQFeedSymbol.o IQFeedSymbol.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IQFeedSymbol.o IQFeedSymbol.cpp
 
-${OBJECTDIR}/InMemoryMktSymbolList.o: InMemoryMktSymbolList.cpp 
+${OBJECTDIR}/InMemoryMktSymbolList.o: InMemoryMktSymbolList.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/InMemoryMktSymbolList.o InMemoryMktSymbolList.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/InMemoryMktSymbolList.o InMemoryMktSymbolList.cpp
 
-${OBJECTDIR}/LoadMktSymbols.o: LoadMktSymbols.cpp 
+${OBJECTDIR}/LoadMktSymbols.o: LoadMktSymbols.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/LoadMktSymbols.o LoadMktSymbols.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/LoadMktSymbols.o LoadMktSymbols.cpp
 
-${OBJECTDIR}/MarketSymbol.o: MarketSymbol.cpp 
+${OBJECTDIR}/MarketSymbol.o: MarketSymbol.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MarketSymbol.o MarketSymbol.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MarketSymbol.o MarketSymbol.cpp
 
-${OBJECTDIR}/MarketSymbols.o: MarketSymbols.cpp 
+${OBJECTDIR}/MarketSymbols.o: MarketSymbols.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MarketSymbols.o MarketSymbols.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MarketSymbols.o MarketSymbols.cpp
 
-${OBJECTDIR}/Option.o: Option.cpp 
+${OBJECTDIR}/Option.o: Option.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Option.o Option.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Option.o Option.cpp
 
-${OBJECTDIR}/ParseMktSymbolDiskFile.o: ParseMktSymbolDiskFile.cpp 
+${OBJECTDIR}/ParseMktSymbolDiskFile.o: ParseMktSymbolDiskFile.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ParseMktSymbolDiskFile.o ParseMktSymbolDiskFile.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ParseMktSymbolDiskFile.o ParseMktSymbolDiskFile.cpp
 
-${OBJECTDIR}/ParseMktSymbolLine.o: ParseMktSymbolLine.cpp 
+${OBJECTDIR}/ParseMktSymbolLine.o: ParseMktSymbolLine.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ParseMktSymbolLine.o ParseMktSymbolLine.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ParseMktSymbolLine.o ParseMktSymbolLine.cpp
 
-${OBJECTDIR}/UnzipMktSymbols.o: UnzipMktSymbols.cpp 
+${OBJECTDIR}/UnzipMktSymbols.o: UnzipMktSymbols.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/UnzipMktSymbols.o UnzipMktSymbols.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/UnzipMktSymbols.o UnzipMktSymbols.cpp
 
-${OBJECTDIR}/ValidateMktSymbolLine.o: ValidateMktSymbolLine.cpp 
+${OBJECTDIR}/ValidateMktSymbolLine.o: ValidateMktSymbolLine.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ValidateMktSymbolLine.o ValidateMktSymbolLine.cpp
+	$(COMPILE.cc) -O2 -I../ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ValidateMktSymbolLine.o ValidateMktSymbolLine.cpp
 
 # Subprojects
 .build-subprojects:
@@ -165,7 +165,6 @@ ${OBJECTDIR}/ValidateMktSymbolLine.o: ValidateMktSymbolLine.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtfiqfeed.a
 
 # Subprojects
 .clean-subprojects:
